@@ -27,7 +27,12 @@ class Connect extends PDO {
 }
 
 // ตั้งค่า Google Auth (ถ้าไม่ได้ใช้ ให้ปล่อยว่างไว้แบบนี้ครับ)
-define('GOOGLE_CLIENT_ID', '');
-define('GOOGLE_CLIENT_SECRET', '');
-define('GOOGLE_REDIRECT_URI', '');
+// define('GOOGLE_CLIENT_ID', '');
+// define('GOOGLE_CLIENT_SECRET', '');
+// define('GOOGLE_REDIRECT_URI', '');
+    define('GOOGLE_CLIENT_ID', getenv('GOOGLE_CLIENT_ID') ?: '');
+    define('GOOGLE_CLIENT_SECRET', getenv('GOOGLE_CLIENT_SECRET') ?: '');
+
+    $redirectUri = getenv('GOOGLE_REDIRECT_URI');
+    define('GOOGLE_REDIRECT_URI', $redirectUri);
 ?>
