@@ -10,7 +10,7 @@ class Connect extends PDO {
         $username = getenv('MYSQLUSER') ?: 'root';
         // ใช้ MYSQL_ROOT_PASSWORD ตามที่เห็นในหน้า Variables ของคุณ
         $password = getenv('MYSQL_ROOT_PASSWORD') ?: getenv('MYSQLPASSWORD') ?: '';
-
+        
         $dsn = "mysql:host={$host};port={$port};dbname={$dbname};charset=utf8mb4";
 
         try {
