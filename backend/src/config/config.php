@@ -3,13 +3,12 @@ date_default_timezone_set('Asia/Bangkok');
 
 class Connect extends PDO {
     public function __construct() {
-        // ดึงค่าจาก Environment Variables ของ Railway
-        $host     = getenv('MYSQLHOST') ?: 'localhost';
-        $port     = getenv('MYSQLPORT') ?: '3306';
-        $dbname   = getenv('MYSQLDATABASE') ?: 'railway';
-        $username = getenv('MYSQLUSER') ?: 'root';
-        // ใช้ MYSQL_ROOT_PASSWORD ตามที่เห็นในหน้า Variables ของคุณ
-        $password = getenv('MYSQL_ROOT_PASSWORD') ?: getenv('MYSQLPASSWORD') ?: '';
+        // 🌟 ใส่ค่าตรงๆ ตามที่คุณเห็นในหน้า Railway Variables เลยครับ
+        $host     = 'mysql.railway.internal'; // จากรูปที่ 2
+        $port     = '3306';                   // จากรูปที่ 2
+        $dbname   = 'railway';                // จากรูปที่ 3
+        $username = 'desalt';                 // จากรูปที่ 3 (แก้ไขจาก root เป็น desalt)
+        $password = 'xAWTYglfUrXjByWiPFDmFutASThBityk'; // จากรูปที่ 2
         
         $dsn = "mysql:host={$host};port={$port};dbname={$dbname};charset=utf8mb4";
 
@@ -27,7 +26,8 @@ class Connect extends PDO {
     }
 }
 
-// ตั้งค่า Google Auth
-define('GOOGLE_CLIENT_ID', getenv('GOOGLE_CLIENT_ID') ?: '');
-define('GOOGLE_CLIENT_SECRET', getenv('GOOGLE_CLIENT_SECRET') ?: '');
-define('GOOGLE_REDIRECT_URI', getenv('GOOGLE_REDIRECT_URI') ?: '');
+// ตั้งค่า Google Auth (ถ้าไม่ได้ใช้ ให้ปล่อยว่างไว้แบบนี้ครับ)
+define('GOOGLE_CLIENT_ID', '');
+define('GOOGLE_CLIENT_SECRET', '');
+define('GOOGLE_REDIRECT_URI', '');
+?>
