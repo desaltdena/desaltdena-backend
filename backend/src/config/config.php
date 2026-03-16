@@ -1,27 +1,23 @@
 <?php
-
     date_default_timezone_set('Asia/Bangkok');
 
     class Connect extends PDO {
-        // แก้ไข 1: เติม __ ให้ construct() ทั้งสองจุด
         public function __construct() {
             
-            // แก้ไข 2: ใช้ getenv() เพื่อดึงค่าจาก Railway ถ้าไม่มีให้ใช้ค่าในเครื่อง
-            $host = getenv('MYSQLHOST') ?: 'localhost'; 
-            $port = getenv('MYSQLPORT') ?: '3306';
-            $dbname = getenv('MYSQLDATABASE') ?: 'railway'; // ปกติ Railway ตั้งชื่อฐานข้อมูลว่า railway
+            // ดึงค่าจาก Railway Variables
+            $host     = getenv('MYSQLHOST') ?: 'localhost'; 
+            $port     = getenv('MYSQLPORT') ?: '3306';
+            $dbname   = getenv('MYSQLDATABASE') ?: 'railway';
             $username = getenv('MYSQLUSER') ?: 'root'; 
-            $password = getenv('MYSQLPASSWORD') ?: ''; // ใส่รหัสผ่าน local ของคุณไว้ตรงนี้
             
+            // 🌟 แก้ไขจุดนี้: ใช้ MYSQL_ROOT_PASSWORD แทน MYSQLPASSWORD เพราะ user คือ root
+            $password = getenv('MYSQL_ROOT_PASSWORD') ?: getenv('MYSQLPASSWORD') ?: ''; 
 
-            // นำตัวแปรมาต่อกัน
             $dsn = "mysql:host={$host};port={$port};dbname={$dbname};charset=utf8mb4";
 
             try {
-                // ส่งค่าเข้าไปเชื่อมต่อ
                 parent::__construct($dsn, $username, $password);
 
-                // ตั้งค่า Error Mode
                 $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $this->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
@@ -29,18 +25,18 @@
                 $this->exec("set names utf8mb4");
 
             } catch (PDOException $e) {
-                // ถ้าเชื่อมต่อไม่ได้ ให้แสดง Error ออกมาดู
-                echo "Connection failed: " . $e->getMessage();
+                // ส่ง Error เป็น JSON เพื่อให้ Frontend อ่านง่าย
+                header('Content-Type: application/json');
+                echo json_encode([
+                    "status" => "error", 
+                    "message" => "Connection failed: " . $e->getMessage()
+                ]);
                 exit;
             }
         }
     }
 
-    // แก้ไข 3: ซ่อน Secret และปรับให้รองรับ URL ของระบบจริง
     define('GOOGLE_CLIENT_ID', getenv('GOOGLE_CLIENT_ID') ?: '');
     define('GOOGLE_CLIENT_SECRET', getenv('GOOGLE_CLIENT_SECRET') ?: '');
-
-    $redirectUri = getenv('GOOGLE_REDIRECT_URI');
-    define('GOOGLE_REDIRECT_URI', $redirectUri);
-
+    define('GOOGLE_REDIRECT_URI', getenv('GOOGLE_REDIRECT_URI') ?: '');
 ?>
