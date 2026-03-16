@@ -7,7 +7,7 @@ class Connect extends PDO {
         $host     = 'mysql.railway.internal'; // จากรูปที่ 2
         $port     = '3306';                   // จากรูปที่ 2
         $dbname   = 'railway';                // จากรูปที่ 3
-        $username = 'desalt';                 // จากรูปที่ 3 (แก้ไขจาก root เป็น desalt)
+        $username = 'root';                 // จากรูปที่ 3 (แก้ไขจาก root เป็น desalt)
         $password = 'xAWTYglfUrXjByWiPFDmFutASThBityk'; // จากรูปที่ 2
         
         $dsn = "mysql:host={$host};port={$port};dbname={$dbname};charset=utf8mb4";
