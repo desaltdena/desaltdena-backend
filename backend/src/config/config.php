@@ -5,7 +5,7 @@
         public function __construct() {
             
             // ดึงค่าจาก Railway Variables
-            $host     = getenv('MYSQLHOST') ?: 'localhost'; 
+            $host     = getenv('MYSQLHOST') ?: 'mysql.railway.internal'; 
             $port     = getenv('MYSQLPORT') ?: '3306';
             $dbname   = getenv('MYSQLDATABASE') ?: 'railway';
             $username = getenv('MYSQLUSER') ?: 'root'; 
