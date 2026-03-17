@@ -37,14 +37,14 @@ try {
 
         if(!$user) {
             // สำหรับผู้ใช้ใหม่
-            $stmt = $db->prepare("INSERT INTO users (google_id, full_name, email, user_role) VALUES (:google_id, :name, :email, 'บุคคลทั่วไป')");
+            $stmt = $db->prepare("INSERT INTO users (google_id, full_name, email) VALUES (:google_id, :name, :email)");
             $stmt->execute([
                 ':google_id' => $userInfo->id,
                 ':name' => $userInfo->name,
                 ':email' => $userInfo->email
             ]);
             $userId = $db->lastInsertId();
-            $userRole = 'บุคคลทั่วไป';
+            $userRole = '';
         } else {
             // สำหรับผู้ใช้เดิม
             $userId = $user['user_id'];
