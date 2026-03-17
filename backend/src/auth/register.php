@@ -18,7 +18,7 @@ $gender = $data['gender'] ?? '';
 $age = $data['age'] ?? null;
 $weight_kg = $data['weight_kg'] ?? null;
 $height_cm = $data['height_cm'] ?? null;
-$role = $data['user_role'] ?? 'บุคคลทั่วไป';
+$role = $data['user_role'] ?? null;
 
 if(empty($email) || empty($password) || empty($full_name)) {
     echo json_encode(["status" => "error", "message" => "กรุณากรอกข้อมูลให้ครบ", "received" => $data]);
