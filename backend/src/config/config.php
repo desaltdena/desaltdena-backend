@@ -19,20 +19,15 @@ class Connect extends PDO {
             $this->exec("SET time_zone = '+07:00'");
             $this->exec("set names utf8mb4");
         } catch (PDOException $e) {
-            header('Content-Type: application/json');
-            echo json_encode(["status" => "error", "message" => "DB Connection Error: " . $e->getMessage()]);
+            // ถ้าเชื่อมต่อไม่ได้ ให้แสดง Error ออกมาดู
+            echo "Connection failed: " . $e->getMessage();
             exit;
         }
     }
 }
+define('GOOGLE_CLIENT_ID', getenv('GOOGLE_CLIENT_ID') ?: '');
+define('GOOGLE_CLIENT_SECRET', getenv('GOOGLE_CLIENT_SECRET') ?: '');
 
-// ตั้งค่า Google Auth (ถ้าไม่ได้ใช้ ให้ปล่อยว่างไว้แบบนี้ครับ)
-// define('GOOGLE_CLIENT_ID', '');
-// define('GOOGLE_CLIENT_SECRET', '');
-// define('GOOGLE_REDIRECT_URI', '');
-    define('GOOGLE_CLIENT_ID', getenv('GOOGLE_CLIENT_ID') ?: '');
-    define('GOOGLE_CLIENT_SECRET', getenv('GOOGLE_CLIENT_SECRET') ?: '');
-
-    $redirectUri = getenv('GOOGLE_REDIRECT_URI');
-    define('GOOGLE_REDIRECT_URI', $redirectUri);
+$redirectUri = getenv('GOOGLE_REDIRECT_URI');
+define('GOOGLE_REDIRECT_URI', $redirectUri);
 ?>
