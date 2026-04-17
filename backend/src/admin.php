@@ -58,8 +58,8 @@ if ($method === 'GET') {
     if ($action === 'summary') {
         $stmt = $db->prepare("SELECT 
             COUNT(*) as total_users, 
-            AVG(pretest_score) * 12.5 as avg_pretest, 
-            AVG(posttest_score) * 12.5 as avg_posttest,
+            (SUM(IFNULL(pretest_score, 0)) / (117 * 8)) * 100 as avg_pretest, 
+            (SUM(IFNULL(posttest_score, 0)) / (117 * 8)) * 100 as avg_posttest,
             COUNT(pretest_score) as count_pretest, 
             COUNT(posttest_score) as count_posttest 
         FROM users");
