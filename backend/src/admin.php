@@ -109,7 +109,10 @@ if ($method === 'GET') {
     
         // 🥧 4. แบบ Pre-test รายข้อ (ถูก/ผิด เป็น %)
         $pretestPieData = [];
+        $posttestPieData = [];
+        
         for ($i = 1; $i <= 8; $i++) {
+            //Pre-test
             $stmtPie = $db->prepare("SELECT 
                 SUM(CASE WHEN is_correct = 1 THEN 1 ELSE 0 END) as correct,
                 SUM(CASE WHEN is_correct = 0 THEN 1 ELSE 0 END) as incorrect
@@ -119,6 +122,17 @@ if ($method === 'GET') {
             $pretestPieData["q$i"] = [
                 ["name" => "ถูก", "value" => (int)$row['correct']],
                 ["name" => "ผิด", "value" => (int)$row['incorrect']]
+            ];
+            // Post-test
+            $stmtPost = $db->prepare("SELECT 
+                SUM(CASE WHEN is_correct = 1 THEN 1 ELSE 0 END) as correct,
+                SUM(CASE WHEN is_correct = 0 THEN 1 ELSE 0 END) as incorrect
+                FROM test_responses WHERE test_type = 'post' AND question_number = ?");
+            $stmtPost->execute([$i]);
+            $rowPost = $stmtPost->fetch(PDO::FETCH_ASSOC);
+            $posttestPieData["q$i"] = [
+                ["name" => "ถูก", "value" => (int)$rowPost['correct']],
+                ["name" => "ผิด", "value" => (int)$rowPost['incorrect']]
             ];
         }
     
@@ -134,7 +148,8 @@ if ($method === 'GET') {
                 "age_data" => $ageData,
                 "sodium_trend" => $sodiumTrend,
                 "overall_compare" => $overallCompare,
-                "pretest_pie_data" => $pretestPieData
+                "pretest_pie_data" => $pretestPieData,
+                "posttest_pie_data" => $posttestPieData
             ]
         ]);
         exit;
