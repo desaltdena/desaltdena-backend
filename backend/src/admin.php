@@ -195,8 +195,8 @@ if ($method === 'GET') {
     if (!in_array($table, $allowed_tables)) exit(json_encode(["status" => "error", "message" => "ชื่อตารางไม่ถูกต้อง"]));
 
     if ($table === 'foods') {
-        $location_id = $_GET['location_id'] ?? null;
-        $restaurant_id = $_GET['restaurant_id'] ?? null;
+        $location_id = (!empty($_GET['location_id']) && $_GET['location_id'] !== 'null') ? $_GET['location_id'] : null;
+        $restaurant_id = (!empty($_GET['restaurant_id']) && $_GET['restaurant_id'] !== 'null') ? $_GET['restaurant_id'] : null;
 
         $sql = "SELECT f.*, l.location_name, r.restaurant_name 
                 FROM foods f
@@ -216,7 +216,12 @@ if ($method === 'GET') {
     }
 
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    echo json_encode(["status" => "success", "count" => count($result), "data" => $result]);
+    echo json_encode([
+        "status" => "success", 
+        "count" => count($result), 
+        "data" => $result
+    ], JSON_UNESCAPED_UNICODE);
+    exit;
 }
 
 // --- [POST METHOD] Create, Update, Delete ---
