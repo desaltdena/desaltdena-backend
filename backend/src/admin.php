@@ -56,7 +56,13 @@ if ($method === 'GET') {
 
     // 📊 1. สรุปภาพรวมสถิติ (Action: summary)
     if ($action === 'summary') {
-        $stmt = $db->prepare("SELECT COUNT(*) as total_users, AVG(pretest_score) as avg_pretest, AVG(posttest_score) as avg_posttest FROM users");
+        $stmt = $db->prepare("SELECT 
+            COUNT(user_id) as total_users,
+            ROUND(AVG(pretest_score) * 12.5, 2) as avg_pretest, 
+            ROUND(AVG(posttest_score) * 12.5, 2) as avg_posttest,
+            COUNT(pretest_score) as count_pretest, 
+            COUNT(posttest_score) as count_posttest
+        FROM users");
         $stmt->execute();
         $summary = $stmt->fetch(PDO::FETCH_ASSOC);
     
@@ -122,6 +128,8 @@ if ($method === 'GET') {
                 "total_users" => (int)$summary['total_users'],
                 "avg_pretest" => round($summary['avg_pretest'], 2),
                 "avg_posttest" => round($summary['avg_posttest'], 2),
+                "count_pretest" => (int)$summary['count_pretest'],
+                "count_posttest" => (int)$summary['count_posttest'],
                 "gender_data" => $genderData,
                 "age_data" => $ageData,
                 "sodium_trend" => $sodiumTrend,
