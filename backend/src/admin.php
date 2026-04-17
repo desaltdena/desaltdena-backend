@@ -58,8 +58,8 @@ if ($method === 'GET') {
     if ($action === 'summary') {
         $stmt = $db->prepare("SELECT 
             COUNT(*) as total_users, 
-            (SUM(IFNULL(pretest_score, 0)) / (COUNT(*) * 8)) * 100 as avg_pretest, 
-            (SUM(IFNULL(posttest_score, 0)) / (COUNT(*) * 8)) * 100 as avg_posttest,
+            (COUNT(pretest_score) / COUNT(*)) * 100 as participation_pre, 
+            (COUNT(posttest_score) / COUNT(*)) * 100 as participation_post,
             COUNT(pretest_score) as count_pretest, 
             COUNT(posttest_score) as count_posttest 
         FROM users");
@@ -140,8 +140,8 @@ if ($method === 'GET') {
             "status" => "success",
             "data" => [
                 "total_users" => (int)$summary['total_users'],
-                "avg_pretest" => round($summary['avg_pretest'], 2),
-                "avg_posttest" => round($summary['avg_posttest'], 2),
+                "avg_pretest" => round($summary['participation_pre'], 2),
+                "avg_posttest" => round($summary['participation_post'], 2),
                 "count_pretest" => (int)$summary['count_pretest'],
                 "count_posttest" => (int)$summary['count_posttest'],
                 "gender_data" => $genderData,
