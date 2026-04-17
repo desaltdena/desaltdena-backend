@@ -195,32 +195,17 @@ if ($method === 'GET') {
     if (!in_array($table, $allowed_tables)) exit(json_encode(["status" => "error", "message" => "ชื่อตารางไม่ถูกต้อง"]));
 
     if ($table === 'foods') {
-        $location_id = (!empty($_GET['location_id']) && $_GET['location_id'] !== 'null') ? $_GET['location_id'] : null;
-        $restaurant_id = (!empty($_GET['restaurant_id']) && $_GET['restaurant_id'] !== 'null') ? $_GET['restaurant_id'] : null;
-
-        $sql = "SELECT f.*, l.location_name, r.restaurant_name 
-                FROM foods f
-                LEFT JOIN locations l ON f.location_id = l.location_id
-                LEFT JOIN restaurants r ON f.restaurant_id = r.restaurant_id
-                WHERE 1=1";
-        
-        $params = [];
-        if ($location_id) { $sql .= " AND f.location_id = :loc"; $params[':loc'] = $location_id; }
-        if ($restaurant_id) { $sql .= " AND f.restaurant_id = :res"; $params[':res'] = $restaurant_id; }
-
+        $sql = "SELECT f.*, l.location_name, r.restaurant_name FROM foods f 
+                LEFT JOIN locations l ON f.location_id = l.location_id 
+                LEFT JOIN restaurants r ON f.restaurant_id = r.restaurant_id";
         $stmt = $db->prepare($sql);
-        $stmt->execute($params);
+        $stmt->execute();
     } else {
-        $stmt = $db->prepare("SELECT * FROM $table");
+        $stmt = $db->prepare("SELECT * FROM `$table` ORDER BY 1 DESC");
         $stmt->execute();
     }
-
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    echo json_encode([
-        "status" => "success", 
-        "count" => count($result), 
-        "data" => $result
-    ], JSON_UNESCAPED_UNICODE);
+    echo json_encode(["status" => "success", "count" => count($result), "data" => $result], JSON_UNESCAPED_UNICODE); // 🌟 ใส่ Flag ภาษาไทยตรงนี้ด้วย
     exit;
 }
 
