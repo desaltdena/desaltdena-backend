@@ -22,6 +22,7 @@ try {
         // บันทึก Session
         $_SESSION['user_id'] = $user['user_id'];
         $_SESSION['full_name'] = $user['full_name'];
+        $_SESSION['user_role'] = $user['user_role'];
 
         echo json_encode([
             "status" => "success",
