@@ -201,7 +201,7 @@ if ($method === 'GET') {
         $stmt = $db->prepare($sql);
         $stmt->execute();
     } else {
-        $stmt = $db->prepare("SELECT * FROM `$table` ORDER BY 1 DESC");
+        $stmt = $db->prepare("SELECT * FROM `$table` ORDER BY 1 ASC");
         $stmt->execute();
     }
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
