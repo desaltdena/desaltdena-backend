@@ -195,6 +195,9 @@ if ($method === 'GET') {
     if (!in_array($table, $allowed_tables)) exit(json_encode(["status" => "error", "message" => "ชื่อตารางไม่ถูกต้อง"]));
 
     if ($table === 'foods') {
+        $location_id = (isset($_GET['location_id']) && is_numeric($_GET['location_id'])) ? (int)$_GET['location_id'] : null;
+        $restaurant_id = (isset($_GET['restaurant_id']) && is_numeric($_GET['restaurant_id'])) ? (int)$_GET['restaurant_id'] : null;
+        
         $sql = "SELECT f.*, l.location_name, r.restaurant_name FROM foods f 
                 LEFT JOIN locations l ON f.location_id = l.location_id 
                 LEFT JOIN restaurants r ON f.restaurant_id = r.restaurant_id";
